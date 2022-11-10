@@ -35,7 +35,7 @@ kind: Service
 metadata:
   name: currency-converter
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
   - port: 7863
   selector:
@@ -78,7 +78,7 @@ kind: Service
 metadata:
   name: holidays
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
   - port: 7864
   selector:
@@ -121,8 +121,51 @@ kind: Service
 metadata:
   name: tax-calculator
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
   - port: 7865
   selector:
     app: tax-calculator
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connector
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: connector
+  template:
+    metadata:
+      labels:
+        app: connector
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: connector
+        image: cavanm/demo:connector
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 7865
+        env:
+        - name: REDIS
+          value: "connector"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: connector
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 7860
+  selector:
+    app: connector
