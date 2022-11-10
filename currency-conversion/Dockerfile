@@ -5,4 +5,4 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 EXPOSE 7863
 COPY . .
-CMD ["python3", "base.py"]
+CMD ["python3", "service.py"]
