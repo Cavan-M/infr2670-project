@@ -1,3 +1,5 @@
+Install git:
+    sudo apt install git
 
 Create resource group:
     az group create -n k8srg -l eastus
@@ -14,7 +16,7 @@ Install kubectl:
 Configure kubectl:
     az aks get-credentials --resource-group k8srg --name aksCluster
 
-add more IP Addresses
+add more IP Addresses (continue if you get an error):
     az aks update --resource-group k8srg --name aksCluster --load-balancer-managed-outbound-ip-count 3
 
 Test if nodes are added:
@@ -24,13 +26,14 @@ Clone Demo resource:
     git clone https://github.com/Cavan-M/infr2670-project
 
 Change directory to cloned repository:
-    cd infr2670
+    cd infr2670-project
 
 Deploy application:
     kubectl apply -f config.yaml
 
-Test:
-    kubectl get service holidays --watch
-    kubectl get service tax-calculator --watch
-    kubectl get service currency-converter --watch
-        
+Wait 5 mins and get public IP with this command:
+    kubectl get service holidays 
+    kubectl get service tax-calculator
+    kubectl get service currency-converter
+
+*NOTE: if the external ip is showing as <pending>, wait another 5 mins and try again
