@@ -6,13 +6,16 @@ Create a RSA key pair:
     ssh-keygen -m PEM -t rsa -b 4096
     
 Create Kubernetes Cluster:
-    az aks create -g k8srg -n aksCluster --enable-managed-identity --node-count 3 --enable-addons monitoring --enable-msi-auth-for-monitoring --ssh-key-value REPLACE-WITH-YOUR-KEY.pub
+    az aks create -g k8srg -n aksCluster --enable-managed-identity --node-count 1 --enable-addons monitoring --enable-msi-auth-for-monitoring --ssh-key-value REPLACE-WITH-YOUR-KEY.pub
 
 Install kubectl:
     sudo az aks install-cli
 
 Configure kubectl:
     az aks get-credentials --resource-group k8srg --name aksCluster
+
+add more IP Addresses
+    az aks update --resource-group k8srg --name aksCluster --load-balancer-managed-outbound-ip-count 3
 
 Test if nodes are added:
     kubectl get nodes
