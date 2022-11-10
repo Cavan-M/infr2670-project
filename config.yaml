@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-converter
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: currency-converter
+  template:
+    metadata:
+      labels:
+        app: currency-converter
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: currency-converter
+        image: demo/currency-converter
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 7863
+        env:
+        - name: REDIS
+          value: "currency-converter"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: currency-converter
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 7863
+  selector:
+    app: currency-converter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: holidays
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: holidays
+  template:
+    metadata:
+      labels:
+        app: holidays
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: holidays
+        image: demo/holidays
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 7863
+        env:
+        - name: REDIS
+          value: "holidays"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: holidays
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 7864
+  selector:
+    app: holidays
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tax-calculator
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tax-calculator
+  template:
+    metadata:
+      labels:
+        app: tax-calculator
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: tax-calculator
+        image: demo/tax-calculator
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - containerPort: 7863
+        env:
+        - name: REDIS
+          value: "tax-calculator"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tax-calculator
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 7865
+  selector:
+    app: tax-calculator
