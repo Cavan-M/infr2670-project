@@ -1,6 +1,9 @@
 
 Create resource group:
-    az group create -n k8srg -l
+    az group create -n k8srg -l eastus
+
+Create a RSA key pair:
+    ssh-keygen -m PEM -t rsa -b 4096
     
 Create Kubernetes Cluster:
     az aks create -g k8srg -n aksCluster --enable-managed-identity --node-count 3 --enable-addons monitoring --enable-msi-auth-for-monitoring --ssh-key-value REPLACE-WITH-YOUR-KEY.pub
@@ -27,4 +30,4 @@ Test:
     kubectl get service holidays --watch
     kubectl get service tax-calculator --watch
     kubectl get service currency-converter --watch
-    
+        
