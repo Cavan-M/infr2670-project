@@ -68,7 +68,7 @@ spec:
             cpu: 250m
             memory: 256Mi
         ports:
-        - containerPort: 7863
+        - containerPort: 7864
         env:
         - name: REDIS
           value: "holidays"
@@ -111,7 +111,7 @@ spec:
             cpu: 250m
             memory: 256Mi
         ports:
-        - containerPort: 7863
+        - containerPort: 7865
         env:
         - name: REDIS
           value: "tax-calculator"
