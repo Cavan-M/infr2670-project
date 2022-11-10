@@ -16,7 +16,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: currency-converter
-        image: demo/currency-converter
+        image: cavanm/demo:currency-conversion
         resources:
           requests:
             cpu: 100m
@@ -59,7 +59,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: holidays
-        image: demo/holidays
+        image: cavanm/demo:holidays
         resources:
           requests:
             cpu: 100m
@@ -102,7 +102,7 @@ spec:
         "kubernetes.io/os": linux
       containers:
       - name: tax-calculator
-        image: demo/tax-calculator
+        image: cavanm/demo:tax-calculator
         resources:
           requests:
             cpu: 100m
