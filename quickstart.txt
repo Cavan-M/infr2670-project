@@ -1,0 +1,30 @@
+
+Create resource group:
+    az group create -n k8srg -l
+    
+Create Kubernetes Cluster:
+    az aks create -g k8srg -n aksCluster --enable-managed-identity --node-count 3 --enable-addons monitoring --enable-msi-auth-for-monitoring --ssh-key-value REPLACE-WITH-YOUR-KEY.pub
+
+Install kubectl:
+    sudo az aks install-cli
+
+Configure kubectl:
+    az aks get-credentials --resource-group k8srg --name aksCluster
+
+Test if nodes are added:
+    kubectl get nodes
+
+Clone Demo resource:
+    git clone https://github.com/Cavan-M/infr2670-project
+
+Change directory to cloned repository:
+    cd infr2670
+
+Deploy application:
+    kubectl apply -f config.yaml
+
+Test:
+    kubectl get service holidays --watch
+    kubectl get service tax-calculator --watch
+    kubectl get service currency-converter --watch
+    
