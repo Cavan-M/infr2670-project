@@ -16,9 +16,6 @@ Install kubectl:
 Configure kubectl:
     az aks get-credentials --resource-group k8srg --name aksCluster
 
-add more IP Addresses (continue if you get an error):
-    az aks update --resource-group k8srg --name aksCluster --load-balancer-managed-outbound-ip-count 3
-
 Test if nodes are added:
     kubectl get nodes
 
