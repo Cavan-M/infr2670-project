@@ -1,9 +1,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: currency-converter
+  name: servconnector
 spec:
   replicas: 3
+  selector:
+    matchLabels:
+      app: servconnector
+  template:
+    metadata:
+      labels:
+        app: servconnector
+    spec:
+      nodeSelector:
+        "kubernetes.io/os": linux
+      containers:
+      - name: servconnector
+        image: cavanm/demo:connector
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
+        ports:
+        - name: http
+          containerPort: 7860
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: servconnector
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 7860
+  selector:
+    app: servconnector
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currency-converter
+spec:
+  replicas: 2
   selector:
     matchLabels:
       app: currency-converter
@@ -46,7 +87,7 @@ kind: Deployment
 metadata:
   name: holidays
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: holidays
@@ -89,7 +130,7 @@ kind: Deployment
 metadata:
   name: tax-calculator
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: tax-calculator
@@ -126,44 +167,3 @@ spec:
   - port: 7865
   selector:
     app: tax-calculator
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: servconnector
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: servconnector
-  template:
-    metadata:
-      labels:
-        app: servconnector
-    spec:
-      nodeSelector:
-        "kubernetes.io/os": linux
-      containers:
-      - name: servconnector
-        image: cavanm/demo:connector
-        resources:
-          requests:
-            cpu: 100m
-            memory: 128Mi
-          limits:
-            cpu: 250m
-            memory: 256Mi
-        ports:
-        - name: http
-          containerPort: 7860
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: servconnector
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-  selector:
-    app: servconnector
