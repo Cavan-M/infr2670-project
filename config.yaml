@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: servconnector
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: servconnector
@@ -44,7 +44,7 @@ kind: Deployment
 metadata:
   name: currency-converter
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: currency-converter
@@ -87,7 +87,7 @@ kind: Deployment
 metadata:
   name: holidays
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: holidays
@@ -130,7 +130,7 @@ kind: Deployment
 metadata:
   name: tax-calculator
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: tax-calculator

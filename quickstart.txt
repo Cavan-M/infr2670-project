@@ -33,6 +33,19 @@ Wait 1 minute and get public IP with this command:
 
 *NOTE: if the external ip is showing as <pending>, wait another 5 mins and try again
 
-Test the server (The expected response is 146):
-    curl <RPLACE-WITH-EXTERNAL-IP>:7860/api/tax-calculator:7865%ON+130
+Test the microservices:
+    echo $(curl <REPLACE-WITH-EXTERNAL-IP>:7860/api/tax-calculator:7865%QC+99.99)
+    echo $(curl <REPLACE-WITH-EXTERNAL-IP>:7860/api/holidays:7864%US-2023-1-1) 
+    echo $(curl <REPLACE-WITH-EXTERNAL-IP>:7860/api/currency-converter:7863%usd+cad)
+    
+Setup Autoscaling
+    kubectl autoscale deployment servconnector --cpu-percent=50 --min=1 --max=10
+    kubectl autoscale deployment tax-calculator --cpu-percent=50 --min=1 --max=10
+    kubectl autoscale deployment holidays --cpu-percent=30 --min=1 --max=10
+    kubectl autoscale deployment currency-converter --cpu-percent=30 --min=1 --max=10
+    
+Increase the Load (RUN IN A NEW TERMINAL WINDOW)
+    kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://servconnector:7860/api/tax-calculator:7865%QC+99.99; done"
 
+Watch the application scale:
+    kubectl get hpa --watch
