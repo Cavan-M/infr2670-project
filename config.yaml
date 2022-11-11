@@ -130,21 +130,21 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: connector
+  name: servconnector
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: connector
+      app: servconnector
   template:
     metadata:
       labels:
-        app: connector
+        app: servconnector
     spec:
       nodeSelector:
         "kubernetes.io/os": linux
       containers:
-      - name: connector
+      - name: servconnector
         image: cavanm/demo:connector
         resources:
           requests:
@@ -154,18 +154,16 @@ spec:
             cpu: 250m
             memory: 256Mi
         ports:
-        - containerPort: 7865
-        env:
-        - name: REDIS
-          value: "connector"
+        - name: http
+          containerPort: 7860
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: connector
+  name: servconnector
 spec:
   type: LoadBalancer
   ports:
-  - port: 8080
+  - port: 80
   selector:
-    app: connector
+    app: servconnector

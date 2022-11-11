@@ -3,6 +3,6 @@ WORKDIR /app
 run apk add --no-cache gcc musl-dev linux-headers 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
-EXPOSE 8080
+EXPOSE 7860
 COPY . .
 CMD ["python3", "service.py"]
